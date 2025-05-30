@@ -3,9 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <title>Owlie – JSOM Chatbot</title>
-  <script type="module" crossorigin src="https://gradio.s3-us-west-2.amazonaws.com/4.16.1/gradio.js"></script>
+  <style>
+    body {
+      background: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+
+    .chatbot-title {
+      text-align: center;
+      font-size: 2em;
+      margin-top: 20px;
+      margin-bottom: 5px;
+    }
+
+    .message, .message.user, .message.bot {
+      background: #2a2a2a !important;
+      color: #eeeeee !important;
+      padding: 10px 12px !important;
+      border-radius: 10px !important;
+      margin: 10px 16px !important;
+      font-size: 1.05rem;
+      border: 1px solid #444 !important;
+      box-shadow: none !important;
+    }
+
+    .gr-box, .gr-panel, .gr-chatbot {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .gr-chatbot-label {
+      display: none !important;
+    }
+
+    #chat-input-area {
+      display: flex;
+      justify-content: center;
+      margin-top: 5px;
+      margin-bottom: 16px;
+    }
+
+    .blinking-owl-img {
+      width: 80px;
+      height: 80px;
+      display: none;
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    #brand-footer {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 20px;
+      padding-top: 10px;
+    }
+
+    #brand-footer a {
+      color: #ccc;
+      text-decoration: none;
+    }
+  </style>
 </head>
-<body style="margin:0;background:#121212;">
+
+<body>
+  <div class="chatbot-title">Owlie</div>
+
+  <div id="chat-input-area">
+    <img id="owl-blink" class="blinking-owl-img" src="static/animated_owl.gif" alt="Thinking Owl" />
+  </div>
+
+  <div id="brand-footer">
+    Powered by <strong>Jindal School of Management</strong> •
+    <a href="mailto:jindal@utdallas.edu">Contact us</a>
+  </div>
+
   <gradio-app src="https://owlie-backend.onrender.com"></gradio-app>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      let owl = document.getElementById("owl-blink");
+      const chatContainer = document.querySelector('[class*="chatbot"]');
+      if (!chatContainer) return;
+
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          const messages = [...mutation.target.querySelectorAll("div[class*=message]")];
+          const lastMessage = messages[messages.length - 1];
+          if (!lastMessage) return;
+          const isWaiting = lastMessage.innerText.trim() === "";
+          owl.style.display = isWaiting ? "inline" : "none";
+        }
+      });
+
+      observer.observe(chatContainer, { childList: true, subtree: true });
+    });
+  </script>
 </body>
 </html>
