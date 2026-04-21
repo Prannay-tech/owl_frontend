@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://owlie-backend.onrender.com/chat" }
+    { "source": "/api/chat", "destination": "https://owlie-backend.onrender.com/chat" }
   ]
 }
