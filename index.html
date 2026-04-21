@@ -362,6 +362,12 @@
   </footer>
 
   <script>
+    // ── Backend URL ──────────────────────────────────────────────────────────
+    // Change this to your Railway URL once deployed, e.g.:
+    // const BACKEND_URL = "https://owlie-backend.up.railway.app";
+    const BACKEND_URL = "https://prannaykhush-owlie-chat.hf.space";   // Hugging Face Space API
+    // ────────────────────────────────────────────────────────────────────────
+
     const chatArea   = document.getElementById("chat-area");
     const welcome    = document.getElementById("welcome");
     const input      = document.getElementById("userInput");
@@ -449,7 +455,7 @@
       showTyping();
 
       try {
-        const res = await fetch("/api/chat", {
+        const res = await fetch(`${BACKEND_URL}/api/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: text })
